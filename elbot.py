@@ -44,7 +44,7 @@ def MakeAction(msg):
 			s.send("PRIVMSG %s :%s, %s\r\n" % (GetChannel(msg),GetUname(msg),RandMentionResponse())) 
 		if(msg.find('!help') is not -1):
 			print 'Help cmd detected !'
-			s.send("PRIVMSG %s :%s, Sorry, my master is too lasy to implement this :( you can maybe help ?\r\n" % (GetChannel(msg),GetUname(msg)))
+			s.send("PRIVMSG %s :%s, Sorry, my master is too lasy to implement this :( you can maybe help on https://github.com/rednaks/EspritLibreBot ?\r\n" % (GetChannel(msg),GetUname(msg)))
 	if(msg.find('INVITE') is not -1):
 		joinChannel(msg)
 
