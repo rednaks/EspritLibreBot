@@ -6,13 +6,23 @@ import string
 import threading
 import time
 import json
+import random
 
-
-
+#Config
 config = {}
 configfile = 'config.json'
+#Messages :
+msgs = {}
+msgfile = 'msgs.json'
+# Main Socket 
 s=socket.socket()
 
+
+
+
+def init():
+	loadConfig()
+	loadMsgs()
 
 def Connect():
 	s.connect((config['host'], config['port']))
@@ -20,27 +30,35 @@ def Connect():
 	s.send("USER %s %s bla :%s\r\n" % (config['ident'], config['host'], config['realname']))
 
 
-def GetConfig():
+def loadConfig():
 	f = open(configfile,'r')
 	fcontent = f.readlines()
 	global config 
 	config = json.loads(''.join(fcontent))
 	f.close()
 
+def loadMsgs():
+	f = open(msgfile,'r')
+	fcontent = f.readlines()
+	global msgs
+	msgs = json.loads(''.join(fcontent))
+
+
 def joinChannel(msg):
 	channel = GetChannel(msg)
 	s.send("JOIN %s\r\n" % channel)
 
 def RandMentionResponse():
-	return "Did you mention me ? what's up ?! I don't understand human language, so can you speak language I can understand ? Type !help to learn more"
+	return "Did you mention me ? what's up ?! I don't understand human language, so can you speak language I can understand ?"
 
 def MakeAction(msg):
 	if(msg.find('PRIVMSG') is not -1):
 		if(msg.find('hello') >-1 or msg.find('Hello') > -1):
 			s.send("PRIVMSG %s :Hello %s :) How are you ? How can I help you ?\r\n" % (GetChannel(msg),GetUname(msg)))
 			return
-		if(msg.find('EspLibreBot') is not -1):
+		if(msg.find(config['nick']) is not -1):
 			s.send("PRIVMSG %s :%s, %s\r\n" % (GetChannel(msg),GetUname(msg),RandMentionResponse())) 
+			s.send("PRIVMSG %s :%s, %s\r\n" % (GetChannel(msg),GetUname(msg),"Type *!help* to learn more.")) 
 		if(msg.find('!help') is not -1):
 			print 'Help cmd detected !'
 			s.send("PRIVMSG %s :%s, Sorry, my master is too lasy to implement this :( you can maybe help on https://github.com/rednaks/EspritLibreBot ?\r\n" % (GetChannel(msg),GetUname(msg)))
@@ -87,6 +105,6 @@ def main_loop():
             
 
 if __name__ == '__main__':
-	GetConfig()
+	init()
 	Connect()
 	main_loop()
