@@ -7,18 +7,13 @@ import threading
 import time
 
 
-#HOST=sys.argv[1]
+
 PORT=6667
-#NICK=sys.argv[2]
 HOST='irc.recycled-irc.net'
-#HOST='irc.recycled-irc.net'
 NICK='EspLibreBot'
 IDENT="ESPLB"
 REALNAME="EspritLibre"
-#readbuffer=""
-#CHANNEL = '#esprit-libre'
 
-cmd_list = ['help','tweet','site','who']
 
 s=socket.socket( )
 s.connect((HOST, PORT))
@@ -88,4 +83,5 @@ def run():
           s.send("PONG %s\r\n" % line[1])
             
 
-run()
+if __name__ == '__main__':
+	run()
