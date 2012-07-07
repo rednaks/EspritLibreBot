@@ -49,7 +49,8 @@ def joinChannel(msg):
 	s.send("JOIN %s\r\n" % channel)
 
 def RandMentionResponse():
-	return "Did you mention me ? what's up ?! I don't understand human language, so can you speak language I can understand ?"
+	n = random.randrange(1,len(msgs)+1)
+	return msgs[str(n)]
 
 def MakeAction(msg):
 	if(msg.find('PRIVMSG') is not -1):
@@ -58,9 +59,8 @@ def MakeAction(msg):
 			return
 		if(msg.find(config['nick']) is not -1):
 			s.send("PRIVMSG %s :%s, %s\r\n" % (GetChannel(msg),GetUname(msg),RandMentionResponse())) 
-			s.send("PRIVMSG %s :%s, %s\r\n" % (GetChannel(msg),GetUname(msg),"Type *!help* to learn more.")) 
+			s.send("PRIVMSG %s :%s, %s\r\n" % (GetChannel(msg),GetUname(msg),"Type \x02!help\x02 to learn more.")) 
 		if(msg.find('!help') is not -1):
-			print 'Help cmd detected !'
 			s.send("PRIVMSG %s :%s, Sorry, my master is too lasy to implement this :( you can maybe help on https://github.com/rednaks/EspritLibreBot ?\r\n" % (GetChannel(msg),GetUname(msg)))
 	if(msg.find('INVITE') is not -1):
 		joinChannel(msg)
