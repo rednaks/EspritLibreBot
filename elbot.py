@@ -5,23 +5,27 @@ import socket
 import string
 import threading
 import time
+import json
 
 
 
-PORT=6667
-HOST='irc.recycled-irc.net'
-NICK='EspLibreBot'
-IDENT="ESPLB"
-REALNAME="EspritLibre"
+config = {}
+configfile = 'config.json'
+s=socket.socket()
 
 
-s=socket.socket( )
-s.connect((HOST, PORT))
-s.send("NICK %s\r\n" % NICK)
-s.send("USER %s %s bla :%s\r\n" % (IDENT, HOST, REALNAME))
-#s.send("JOIN %s\r\n" % CHANNEL)
+def Connect():
+	s.connect((config['host'], config['port']))
+	s.send("NICK %s\r\n" % config['nick'])
+	s.send("USER %s %s bla :%s\r\n" % (config['ident'], config['host'], config['realname']))
 
 
+def GetConfig():
+	f = open(configfile,'r')
+	fcontent = f.readlines()
+	global config 
+	config = json.loads(''.join(fcontent))
+	f.close()
 
 def joinChannel(msg):
 	channel = GetChannel(msg)
@@ -43,10 +47,9 @@ def MakeAction(msg):
 	if(msg.find('INVITE') is not -1):
 		joinChannel(msg)
 
-
-
 def GetCmd(msg):
 	return
+
 def GetMsg(msg):
   msg = msg[msg.find('PRIVMSG'):]
   msg = msg[msg.find(':')+1:]
@@ -67,7 +70,7 @@ def printMsg(msg):
   print '@'+GetUname(msg)+': '+GetMsg(msg)
 
     
-def run():
+def main_loop():
  readbuffer = ""
  while 1:
   readbuffer=readbuffer+s.recv(1024)
@@ -84,4 +87,6 @@ def run():
             
 
 if __name__ == '__main__':
-	run()
+	GetConfig()
+	Connect()
+	main_loop()

@@ -1,0 +1,8 @@
+{
+	"nick":			"EspLibreBot",
+	"host":			"irc.recycled-irc.net",
+	"port":			6667,
+	"master":		"rednaks",
+	"ident":		"ESPLB",
+	"realname":"EspritLibre"
+}
