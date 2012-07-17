@@ -1,6 +1,6 @@
 {
 	"nick":			"EspLibreBot",
-	"host":			"irc.recycled-irc.net",
+	"host":			"irc.freenode.net",
 	"port":			6667,
 	"master":		"rednaks",
 	"ident":		"ESPLB",
