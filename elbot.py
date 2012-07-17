@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+# -*- coding:utf-8 -*-
 import sys
 import socket
 import string
@@ -95,7 +95,10 @@ def main_loop():
   temp=string.split(readbuffer, "\n")
   readbuffer=temp.pop( )
   print temp
-  MakeAction(temp[0])
+  try:
+	MakeAction(temp[0].decode('utf-8'))
+  except:
+    MakeAction(temp[0].decode('iso8859-1'))
   #print GetMsg(temp[0])
   for line in temp:
       line=string.rstrip(line)
